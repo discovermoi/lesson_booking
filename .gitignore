@@ -1,0 +1,16 @@
+# Python
+*.pyc
+__pycache__/
+
+# Virtual environment
+venv/
+
+# Database
+db.sqlite3
+
+# Django stuff
+*.log
+*.pot
+*.py[cod]
+*.swp
+*.DS_Store
