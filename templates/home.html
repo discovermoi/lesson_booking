@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lesson Booking Home</title>
+</head>
+<body>
+    <h1>Welcome to the Lesson Booking Website</h1>
+    {% if user.is_authenticated %}
+        <p>Hello, {{ user.username }}! Go to your <a href="#">dashboard</a>.</p>
+    {% else %}
+        <p><a href="/admin/login/">Login</a> to start booking lessons.</p>
+    {% endif %}
+</body>
+</html>
