@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Lesson Booking{% endblock %}</title>
+</head>
+<body>
+
+<header>
+    <h1>Driving School</h1>
+    <nav>
+        <a href="/">Home</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}">My Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Sign Up</a>
+        {% endif %}
+    </nav>
+</header>
+
+<hr>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<hr>
+
+<footer>
+    <p>© Driving School</p>
+</footer>
+
+</body>
+</html>

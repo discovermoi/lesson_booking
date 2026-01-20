@@ -1,14 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Lesson Booking Home</title>
+    <title>Driving School</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .section {
+            padding: 60px 40px;
+        }
+
+        .hero {
+            background-color: #e3f2fd;
+        }
+
+        .instructor {
+            background-color: #fce4ec;
+        }
+
+        .fleet {
+            background-color: #e8f5e9;
+        }
+
+        h1, h2 {
+            margin-top: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Lesson Booking Website</h1>
-    {% if user.is_authenticated %}
-        <p>Hello, {{ user.username }}! Go to your <a href="#">dashboard</a>.</p>
-    {% else %}
-        <p><a href="/admin/login/">Login</a> to start booking lessons.</p>
-    {% endif %}
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Welcome to Our Driving School</h2>
+<p>This is a placeholder home page.</p>
+{% endblock %}
+
+{% if user.is_authenticated %}
+    <p>
+        Welcome, {{ user.username }} |
+        <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+        </form>
+    </p>
+{% else %}
+    <p>
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'signup' %}">Sign Up</a>
+    </p>
+{% endif %}
+
+    <!-- Hero Section -->
+    <section class="section hero">
+        <div class="container">
+            <h1>Welcome to SafeDrive Driving School</h1>
+            <p>
+                Professional driving lessons focused on safety, confidence, and real-world driving skills.
+            </p>
+        </div>
+    </section>
+
+    <!-- Instructor Section -->
+    <section class="section instructor">
+        <div class="container">
+            <h2>Your Instructor</h2>
+            <p>
+                Learn from a certified, patient, and experienced driving instructor committed
+                to helping students pass their driving test with confidence.
+            </p>
+        </div>
+    </section>
+
+    <!-- Fleet Section -->
+    <section class="section fleet">
+        <div class="container">
+            <h2>Our Vehicles</h2>
+            <p>
+                Modern, well-maintained dual-control vehicles designed to provide a safe
+                and comfortable learning experience.
+            </p>
+        </div>
+    </section>
+
 </body>
 </html>
