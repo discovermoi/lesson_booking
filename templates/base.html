@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Lesson Booking{% endblock %}</title>
+  <meta charset="UTF-8">
+  <title>{% block title %}Lesson Booking{% endblock %}</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
 
-<header>
-    <h1>Driving School</h1>
-    <nav>
-        <a href="/">Home</a>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- NAVBAR -->
+  <nav class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="/" class="text-xl font-semibold text-indigo-600">
+        LessonBooking
+      </a>
+
+      <div class="space-x-4">
         {% if user.is_authenticated %}
-            <a href="{% url 'profile' %}">My Profile</a>
-            <form method="post" action="{% url 'logout' %}">{% csrf_token %}
-            <button type="submit">Logout</button>
-</form>
-
+          <a href="/profile/" class="text-gray-600 hover:text-indigo-600">
+            Profile
+          </a>
+          <a href="/booking/book/" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+            Book
+          </a>
         {% else %}
-            <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'signup' %}">Sign Up</a>
+          <a href="{% url 'login' %}" class="text-gray-600 hover:text-indigo-600">
+            Login
+          </a>
+          <a href="{% url 'signup' %}" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+            Get Started
+          </a>
         {% endif %}
-    </nav>
-</header>
+      </div>
+    </div>
+  </nav>
 
-<hr>
-
-<main>
+  <main class="max-w-7xl mx-auto px-6 py-10">
     {% block content %}{% endblock %}
-</main>
-
-<hr>
-
-<footer>
-    <p>© Driving School</p>
-</footer>
+  </main>
 
 </body>
 </html>
