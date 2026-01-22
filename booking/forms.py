@@ -1,5 +1,7 @@
 from django import forms
 from .models import Booking
+from users.models import Profile
+
 
 class BookingForm(forms.ModelForm):
     class Meta:
@@ -12,5 +14,7 @@ class BookingForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Filter instructors
-        self.fields['instructor'].queryset = Booking._meta.get_field('instructor').remote_field.model.objects.filter(role="INSTRUCTOR")
+        # Only show users with role="Instructor"
+
+        self.fields['instructor'].queryset = Profile.objects.filter(role="instructor")
+        self.fields['instructor'].empty_label = "Select an Instructor"

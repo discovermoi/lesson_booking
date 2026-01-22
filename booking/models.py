@@ -12,7 +12,7 @@ class Booking(models.Model):
     instructor = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
-        limit_choices_to={'role': 'INSTRUCTOR'}
+        limit_choices_to={'role': 'instructor'},
     )
     student = models.ForeignKey(
         Profile,
@@ -22,8 +22,10 @@ class Booking(models.Model):
     date = models.DateField()
     time_slot = models.CharField(
         max_length=20,
-        choices=TIME_SLOTS
+        choices=TIME_SLOTS,
+        default="09:00-10:00",
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -9,6 +9,17 @@
 
 <body class="bg-gray-50 text-gray-800">
 
+{% if messages %}
+  <div class="max-w-xl mx-auto mt-4">
+    {% for message in messages %}
+      <div class="mb-2 p-3 rounded bg-green-100 text-green-800">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+
   <!-- NAVBAR -->
   <nav class="bg-white shadow-sm">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
