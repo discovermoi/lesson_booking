@@ -1,12 +1,28 @@
-{% extends "base.html" %}
-
-{% block content %}
-<h2>My Bookings</h2>
-<ul>
+<table class="w-full table-auto border">
+  <thead>
+    <tr class="bg-gray-200">
+      <th class="p-2">Instructor</th>
+      <th class="p-2">Date</th>
+      <th class="p-2">Time</th>
+      <th class="p-2">Status</th>
+    </tr>
+  </thead>
+  <tbody>
     {% for booking in bookings %}
-        <li>{{ booking.instructor.username }} - {{ booking.date }} - {{ booking.time_slot }} - {{ booking.status }}</li>
+    <tr class="border-t">
+      <td class="p-2">{{ booking.instructor.user.username }}</td>
+      <td class="p-2">{{ booking.date }}</td>
+      <td class="p-2">{{ booking.time_slot }}</td>
+      <td class="p-2">
+        {% if booking.paid %}
+          <span class="bg-green-200 text-green-800 px-2 py-1 rounded">Paid</span>
+        {% else %}
+          <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded">Pending</span>
+        {% endif %}
+      </td>
+    </tr>
     {% empty %}
-        <li>No bookings yet.</li>
+    <tr><td colspan="4" class="p-2 text-center">No bookings found.</td></tr>
     {% endfor %}
-</ul>
-{% endblock %}
+  </tbody>
+</table>

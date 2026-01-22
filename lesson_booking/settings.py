@@ -126,4 +126,6 @@ LOGOUT_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'no-reply@lessonbooking.com'
 
-
+# Stripe Keys
+STRIPE_SECRET_KEY = "sk_test_51SsDrVI5YoG473qNPxjXB59hNcxuIJtS7JUl02zwhR447nFwBD5jBjHbu3bqeixNOW3TX9c69SSyoIVIl1qbMyOX007HRWVGel"
+STRIPE_PUBLISHABLE_KEY = "pk_test_51SsDrVI5YoG473qN4G2RDAcYHfBdxeq73dyb3Vn4RxpzBRIIwaqzElPjKPSaJsvvRwPCCRBU8EtT08I4foTcNrp90033wH4sDU"

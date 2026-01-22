@@ -28,5 +28,8 @@ class Booking(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # NEW FIELD
+    paid = models.BooleanField(default=False)
+
     def __str__(self):
         return f"{self.student.user.username} -> {self.instructor.user.username} on {self.date} at {self.time_slot}"
