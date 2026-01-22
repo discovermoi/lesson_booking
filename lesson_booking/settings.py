@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-hhof$=z7)r6e!!-36_(fv9-w767-q@48j0#0@em#rouk@wir=c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
+
 
 
 # Application definition
@@ -118,6 +119,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
@@ -129,3 +132,4 @@ DEFAULT_FROM_EMAIL = 'no-reply@lessonbooking.com'
 # Stripe Keys
 STRIPE_SECRET_KEY = "sk_test_51SsDrVI5YoG473qNPxjXB59hNcxuIJtS7JUl02zwhR447nFwBD5jBjHbu3bqeixNOW3TX9c69SSyoIVIl1qbMyOX007HRWVGel"
 STRIPE_PUBLISHABLE_KEY = "pk_test_51SsDrVI5YoG473qN4G2RDAcYHfBdxeq73dyb3Vn4RxpzBRIIwaqzElPjKPSaJsvvRwPCCRBU8EtT08I4foTcNrp90033wH4sDU"
+
