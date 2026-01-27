@@ -77,15 +77,12 @@ WSGI_APPLICATION = 'lesson_booking.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://lesson_booking_db_o2sb_user:rAj8hyOOq2wymQTy7LVKtPkXpFPLYXDa@dpg-d5p2kda4d50c739tg390-a/lesson_booking_db_o2sb',
+        default='sqlite:///db.sqlite3',
         conn_max_age=600
     )
 }
-
-
 
 
 # Password validation
