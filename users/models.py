@@ -6,7 +6,7 @@ from django.dispatch import receiver
 class Profile(models.Model):
     ROLE_CHOICES = (
         ('student', 'Student'),
-        ('Instructor', 'Instructor'),
+        ('instructor', 'Instructor'),
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
