@@ -9,6 +9,12 @@ class Booking(models.Model):
         ("14:00-15:00", "14:00 – 15:00"),
     ]
 
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("paid", "Paid"),
+        ("cancelled", "Cancelled"),
+    ]
+
     instructor = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
@@ -23,13 +29,21 @@ class Booking(models.Model):
     time_slot = models.CharField(
         max_length=20,
         choices=TIME_SLOTS,
-        default="09:00-10:00",
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="pending"
+    )
+
+    payment_intent_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # NEW FIELD
-    paid = models.BooleanField(default=False)
-
     def __str__(self):
-        return f"{self.student.user.username} -> {self.instructor.user.username} on {self.date} at {self.time_slot}"
+        return f"{self.student.user.username} → {self.instructor.user.username} on {self.date} at {self.time_slot}"
