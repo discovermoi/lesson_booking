@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<h2>Choose payment method</h2>
+
+<a href="{% url 'checkout' booking.id %}">💳 Pay now</a><br><br>
+
+<form method="post" action="{% url 'pay_in_person' booking.id %}">
+  {% csrf_token %}
+  <button type="submit">💵 Pay in person</button>
+</form>
+</body>
+</html>

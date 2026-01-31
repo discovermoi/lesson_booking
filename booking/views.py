@@ -17,6 +17,7 @@ def book_lesson(request):
         if form.is_valid():
             booking = form.save(commit=False)
             booking.student = request.user.profile
+            booking.payment_status = "UNPAID"
             booking.save()
 
             send_mail(
@@ -32,7 +33,7 @@ def book_lesson(request):
             )
 
             messages.success(request, "Booking created successfully!")
-            return redirect('checkout', booking_id=booking.id)
+            return redirect("booking_payment_options", booking_id=booking.id)
     else:
         form = BookingForm()
     return render(request, 'booking/book_lesson.html', {'form': form})
@@ -67,10 +68,26 @@ def create_checkout_session(request, booking_id):
 # booking/views.py
 def payment_success(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
-    booking.paid = True
+    booking.payment_status = "PAID"
     booking.save()
-    return render(request, 'booking/payment_success.html', {'booking': booking})
+    return render(request, "booking/payment_success.html", {"booking": booking})
 
 def payment_cancel(request):
     return render(request, 'booking/payment_cancel.html')
+
+@login_required
+def payment_options(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id, student=request.user.profile)
+    return render(request, "booking/payment_options.html", {"booking": booking})
+
+@login_required
+def pay_in_person(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    booking.payment_status = "IN_PERSON"
+    booking.save()
+
+    messages.success(request, "Booking confirmed. Pay in person.")
+    return redirect("my_bookings")
+
 

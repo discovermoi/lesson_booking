@@ -2,6 +2,18 @@ from django.db import models
 from users.models import Profile
 
 class Booking(models.Model):
+    PAYMENT_STATUS = [
+        ("UNPAID", "Unpaid"),
+        ("PAID", "Paid"),
+        ("IN_PERSON", "Pay in person"),
+    ]
+
+    payment_status = models.CharField(
+        max_length=20,
+        choices=PAYMENT_STATUS,
+        default="UNPAID"
+    )
+
     TIME_SLOTS = [
         ("09:00-10:00", "09:00 – 10:00"),
         ("10:00-11:00", "10:00 – 11:00"),
