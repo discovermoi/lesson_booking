@@ -27,6 +27,27 @@ class Booking(models.Model):
         ("cancelled", "Cancelled"),
     ]
 
+    LESSON_TYPES = [
+        ("FREE", "Free Intro (15 mins)"),
+        ("45", "45 Minutes"),
+        ("60", "60 Minutes"),
+        ("90", "90 Minutes"),
+    ]
+
+    lesson_type = models.CharField(
+        max_length=10,
+        choices=LESSON_TYPES,
+        default="60",
+    )
+
+    price = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=0.00
+    )
+
+    paid = models.BooleanField(default=False)
+
     instructor = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,

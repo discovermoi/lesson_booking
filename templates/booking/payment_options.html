@@ -1,13 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+<h2 class="text-xl font-semibold mb-6 text-center">Complete Payment</h2>
 
-<h2>Choose payment method</h2>
+<div class="text-center mb-6">
+    <p>Lesson: {{ booking.get_lesson_type_display }}</p>
+    <p class="text-2xl font-bold">${{ booking.price }}</p>
+</div>
 
-<a href="{% url 'checkout' booking.id %}">💳 Pay now</a><br><br>
+<div class="flex justify-center gap-4">
+    <a href="{% url 'checkout' booking.id %}"
+       class="bg-blue-600 text-white px-6 py-3 rounded-lg">
+        Pay Now
+    </a>
 
-<form method="post" action="{% url 'pay_in_person' booking.id %}">
-  {% csrf_token %}
-  <button type="submit">💵 Pay in person</button>
-</form>
-</body>
-</html>
+    <a href="{% url 'pay_in_person' booking.id %}"
+       class="bg-gray-300 px-6 py-3 rounded-lg">
+        Pay In Person
+    </a>
+</div>

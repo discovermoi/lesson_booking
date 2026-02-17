@@ -10,4 +10,5 @@ urlpatterns = [
     path("booking/<int:booking_id>/payment/", views.payment_options, name="booking_payment_options"),
     path('checkout/<int:booking_id>/', views.create_checkout_session, name='checkout'),
     path("booking/<int:booking_id>/pay-in-person/",views.pay_in_person,name="pay_in_person"),
+    path("booking/<int:booking_id>/pay-in-person/", views.pay_in_person, name="pay_in_person"),
 ]

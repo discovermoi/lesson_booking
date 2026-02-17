@@ -23,6 +23,13 @@ def book_lesson(request):
         selected_date = form.cleaned_data["date"]
         selected_time = form.cleaned_data["time_slot"]
 
+        PRICE_MAP = {
+            "FREE": 0,
+            "45": 70,
+            "60": 90,
+            "90": 120,
+        }
+
         # Get already booked slots
         booked_slots = Booking.objects.filter(
             instructor=instructor,
@@ -41,9 +48,20 @@ def book_lesson(request):
             form.add_error("time_slot", "This time slot is already booked.")
         else:
             booking = form.save(commit=False)
+            booking.price = PRICE_MAP.get(booking.lesson_type, 0)
+            existing = Booking.objects.filter(
+                instructor=booking.instructor,
+                date=booking.date,
+                time_slot=booking.time_slot
+            ).exists()
+
+            if existing:
+                messages.error(request, "This time slot is already booked.")
+                return redirect("book_lesson")
+
             booking.student = request.user.profile
             booking.save()
-            return redirect("my_bookings")
+            return redirect("booking_payment_options", booking_id=booking.id)
 
     return render(request, "booking/book_lesson.html", {"form": form})
 
@@ -87,17 +105,21 @@ def payment_cancel(request):
 
 @login_required
 def payment_options(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id, student=request.user.profile)
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    if booking.price == 0:
+        booking.paid = True
+        booking.save()
+        messages.success(request, "Free lesson booked successfully!")
+        return redirect("my_bookings")
+
     return render(request, "booking/payment_options.html", {"booking": booking})
 
 @login_required
 def pay_in_person(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
-
-    booking.payment_status = "IN_PERSON"
-    booking.save()
-
-    messages.success(request, "Booking confirmed. Pay in person.")
+    messages.success(request, "Booking reserved. Pay at lesson.")
     return redirect("my_bookings")
+
 
 

@@ -2,19 +2,20 @@
 {% block title %}Book a Lesson{% endblock %}
 
 {% block content %}
-<div class="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-8">
+<div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-10">
 
-  <h2 class="text-2xl font-bold text-gray-800 text-center">
+  <h2 class="text-3xl font-bold text-gray-800 text-center">
     Book a Driving Lesson
   </h2>
 
   <p class="text-center text-gray-500 mt-2">
-    Choose your instructor and preferred time
+    Choose your instructor, date and lesson type
   </p>
 
-  <form method="post" class="mt-6 space-y-5">
+  <form method="post" class="mt-8 space-y-6">
     {% csrf_token %}
 
+    <!-- Instructor -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-1">
         Instructor
@@ -22,6 +23,7 @@
       {{ form.instructor }}
     </div>
 
+    <!-- Date -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-1">
         Date
@@ -29,6 +31,7 @@
       {{ form.date }}
     </div>
 
+    <!-- Time -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-1">
         Time
@@ -36,11 +39,86 @@
       {{ form.time_slot }}
     </div>
 
+    <!-- Lesson Type Section -->
+    <h2 class="text-2xl font-semibold mt-8 text-center">
+      Choose Your Lesson
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
+
+      <!-- FREE -->
+      <label class="cursor-pointer">
+        <input type="radio" name="lesson_type" value="FREE" class="hidden peer" required>
+        <div class="border rounded-2xl p-6 text-center
+                    transition duration-200
+                    peer-checked:border-indigo-600
+                    peer-checked:shadow-2xl
+                    peer-checked:scale-105">
+
+          <h3 class="text-lg font-bold">Free Intro</h3>
+          <p class="text-gray-500 text-sm">15 Minutes</p>
+          <p class="text-2xl font-bold mt-4">$0</p>
+
+        </div>
+      </label>
+
+      <!-- 45 MIN -->
+      <label class="cursor-pointer">
+        <input type="radio" name="lesson_type" value="45" class="hidden peer">
+        <div class="border rounded-2xl p-6 text-center
+                    transition duration-200
+                    peer-checked:border-indigo-600
+                    peer-checked:shadow-2xl
+                    peer-checked:scale-105">
+
+          <h3 class="text-lg font-bold">45 Minutes</h3>
+          <p class="text-2xl font-bold mt-4">$70</p>
+
+        </div>
+      </label>
+
+      <!-- 60 MIN (Default Selected) -->
+      <label class="cursor-pointer">
+        <input type="radio" name="lesson_type" value="60" class="hidden peer" checked>
+        <div class="border rounded-2xl p-6 text-center
+                    transition duration-200
+                    peer-checked:border-indigo-600
+                    peer-checked:shadow-2xl
+                    peer-checked:scale-105">
+
+          <h3 class="text-lg font-bold">60 Minutes</h3>
+          <p class="text-2xl font-bold mt-4">$90</p>
+          <p class="text-xs text-indigo-500 mt-2">Most Popular</p>
+
+        </div>
+      </label>
+
+      <!-- 90 MIN -->
+      <label class="cursor-pointer">
+        <input type="radio" name="lesson_type" value="90" class="hidden peer">
+        <div class="border rounded-2xl p-6 text-center
+                    transition duration-200
+                    peer-checked:border-indigo-600
+                    peer-checked:shadow-2xl
+                    peer-checked:scale-105">
+
+          <h3 class="text-lg font-bold">90 Minutes</h3>
+          <p class="text-2xl font-bold mt-4">$120</p>
+
+        </div>
+      </label>
+
+    </div>
+
+    <!-- Submit Button -->
     <button
       type="submit"
-      class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition">
+      class="w-full bg-gradient-to-r from-indigo-600 to-purple-600
+             text-white py-3 rounded-xl
+             hover:opacity-90 transition mt-6 text-lg font-semibold">
       Confirm Booking
     </button>
+
   </form>
 
 </div>

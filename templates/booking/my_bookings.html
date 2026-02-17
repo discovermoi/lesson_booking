@@ -1,30 +1,13 @@
-<table class="w-full table-auto border">
-  <thead>
-    <tr class="bg-gray-200">
-      <th class="p-2">Instructor</th>
-      <th class="p-2">Date</th>
-      <th class="p-2">Time</th>
-      <th class="p-2">Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for booking in bookings %}
-    <tr class="border-t">
-      <td class="p-2">{{ booking.instructor.user.username }}</td>
-      <td class="p-2">{{ booking.date }}</td>
-      <td class="p-2">{{ booking.time_slot }}</td>
-      <td class="p-2">
-        {% if booking.payment_status == "PAID" %}
-  ✅ Paid
-{% elif booking.payment_status == "IN_PERSON" %}
-  💵 Pay in person
-{% else %}
-  ❌ Unpaid
-{% endif %}
-      </td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="4" class="p-2 text-center">No bookings found.</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% for booking in bookings %}
+<div class="border p-4 rounded mb-4">
+    <p>{{ booking.date }} | {{ booking.time_slot }}</p>
+    <p>{{ booking.get_lesson_type_display }}</p>
+    <p>Status:
+        {% if booking.paid %}
+            <span class="text-green-600">Paid</span>
+        {% else %}
+            <span class="text-yellow-600">Pending</span>
+        {% endif %}
+    </p>
+</div>
+{% endfor %}
