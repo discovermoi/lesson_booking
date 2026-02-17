@@ -7,36 +7,46 @@ from django.core.mail import send_mail
 import stripe
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
+from datetime import date
+from .models import Booking
+
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 @login_required
 def book_lesson(request):
-    if request.method == 'POST':
-        form = BookingForm(request.POST)
-        if form.is_valid():
+    form = BookingForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+
+        instructor = form.cleaned_data["instructor"]
+        selected_date = form.cleaned_data["date"]
+        selected_time = form.cleaned_data["time_slot"]
+
+        # Get already booked slots
+        booked_slots = Booking.objects.filter(
+            instructor=instructor,
+            date=selected_date
+        ).values_list("time_slot", flat=True)
+
+        # 🔒 Remove booked slots from dropdown
+        available_slots = [
+            slot for slot in Booking.TIME_SLOTS
+            if slot[0] not in booked_slots
+        ]
+
+        form.fields["time_slot"].choices = available_slots
+
+        if selected_time in booked_slots:
+            form.add_error("time_slot", "This time slot is already booked.")
+        else:
             booking = form.save(commit=False)
             booking.student = request.user.profile
-            booking.payment_status = "UNPAID"
             booking.save()
+            return redirect("my_bookings")
 
-            send_mail(
-                subject="New Lesson Booking",
-                message=(
-                    f"You have a new booking!\n\n"
-                    f"Student: {booking.student.user.username}\n"
-                    f"Date: {booking.date}\n"
-                    f"Time: {booking.time_slot}"
-                ),
-                from_email=None,
-                recipient_list=[booking.instructor.user.email],
-            )
+    return render(request, "booking/book_lesson.html", {"form": form})
 
-            messages.success(request, "Booking created successfully!")
-            return redirect("booking_payment_options", booking_id=booking.id)
-    else:
-        form = BookingForm()
-    return render(request, 'booking/book_lesson.html', {'form': form})
 
 @login_required
 def my_bookings(request):
