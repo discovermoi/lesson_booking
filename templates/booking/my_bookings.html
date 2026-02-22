@@ -1,13 +1,69 @@
-{% for booking in bookings %}
-<div class="border p-4 rounded mb-4">
-    <p>{{ booking.date }} | {{ booking.time_slot }}</p>
-    <p>{{ booking.get_lesson_type_display }}</p>
-    <p>Status:
-        {% if booking.paid %}
-            <span class="text-green-600">Paid</span>
-        {% else %}
-            <span class="text-yellow-600">Pending</span>
-        {% endif %}
-    </p>
+{% extends "base.html" %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto">
+
+  <h1 class="text-2xl font-semibold mb-6 text-center sm:text-left">
+    My Bookings
+  </h1>
+
+  {% if bookings %}
+    <div class="space-y-4">
+
+      {% for booking in bookings %}
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+
+          <!-- LEFT SIDE -->
+          <div class="space-y-1">
+
+            <!-- STUDENT NAME -->
+            <p class="text-lg font-semibold text-gray-900">
+              {{ booking.student.user.get_full_name|default:booking.student.user.username }}
+            </p>
+
+            <!-- LESSON TYPE -->
+            <p class="text-sm font-medium text-indigo-600">
+              {{ booking.get_lesson_type_display }}
+            </p>
+
+            <!-- DATE + TIME -->
+            <p class="text-sm text-gray-500">
+              {{ booking.date }} · {{ booking.get_time_slot_display }}
+            </p>
+
+          </div>
+
+          <!-- RIGHT SIDE (PAYMENT STATUS BADGE) -->
+          <div>
+            {% if booking.payment_status == "PAID" %}
+              <span class="inline-block px-4 py-1 text-sm font-medium rounded-full bg-green-100 text-green-700">
+                Paid
+              </span>
+            {% elif booking.payment_status == "IN_PERSON" %}
+              <span class="inline-block px-4 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-700">
+                Pay In Person
+              </span>
+            {% else %}
+              <span class="inline-block px-4 py-1 text-sm font-medium rounded-full bg-yellow-100 text-yellow-700">
+                Unpaid
+              </span>
+            {% endif %}
+          </div>
+
+        </div>
+      {% endfor %}
+
+    </div>
+
+  {% else %}
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center text-gray-500">
+      No bookings yet.
+    </div>
+  {% endif %}
+
 </div>
-{% endfor %}
+
+{% endblock %}
