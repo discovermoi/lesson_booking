@@ -17,54 +17,55 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 def book_lesson(request):
     form = BookingForm(request.POST or None)
 
+    # Centralised pricing map (A1)
+    PRICE_MAP = {
+        "FREE": 0,
+        "45": 70,
+        "60": 90,
+        "90": 120,
+    }
+
     if request.method == "POST" and form.is_valid():
 
         instructor = form.cleaned_data["instructor"]
         selected_date = form.cleaned_data["date"]
         selected_time = form.cleaned_data["time_slot"]
+        lesson_type = form.cleaned_data.get("lesson_type")
 
-        PRICE_MAP = {
-            "FREE": 0,
-            "45": 70,
-            "60": 90,
-            "90": 120,
-        }
-
-        # Get already booked slots
-        booked_slots = Booking.objects.filter(
+        # 🔒 Prevent double booking
+        existing = Booking.objects.filter(
             instructor=instructor,
-            date=selected_date
-        ).values_list("time_slot", flat=True)
+            date=selected_date,
+            time_slot=selected_time
+        ).exists()
 
-        # 🔒 Remove booked slots from dropdown
-        available_slots = [
-            slot for slot in Booking.TIME_SLOTS
-            if slot[0] not in booked_slots
-        ]
+        if existing:
+            messages.error(request, "This time slot is already booked.")
+            return redirect("book_lesson")
 
-        form.fields["time_slot"].choices = available_slots
+        # Create booking but don't save yet
+        booking = form.save(commit=False)
 
-        if selected_time in booked_slots:
-            form.add_error("time_slot", "This time slot is already booked.")
-        else:
-            booking = form.save(commit=False)
-            booking.price = PRICE_MAP.get(booking.lesson_type, 0)
-            existing = Booking.objects.filter(
-                instructor=booking.instructor,
-                date=booking.date,
-                time_slot=booking.time_slot
-            ).exists()
+        # ✅ STEP A1 — Assign price properly
+        booking.lesson_type = lesson_type
+        booking.price = PRICE_MAP.get(lesson_type, 0)
+        booking.payment_status = "UNPAID"
+        booking.paid = False
 
-            if existing:
-                messages.error(request, "This time slot is already booked.")
-                return redirect("book_lesson")
+        booking.student = request.user.profile
+        booking.save()
 
-            booking.student = request.user.profile
+        # ✅ STEP A2 — Skip Stripe for FREE lesson
+        if booking.price == 0:
+            booking.paid = True
+            booking.payment_status = "PAID"
             booking.save()
-            return redirect("booking_payment_options", booking_id=booking.id)
+            return redirect("booking_success")
+
+        # Paid lesson → go to payment options
+        return redirect("booking_payment_options", booking_id=booking.id)
 
     return render(request, "booking/book_lesson.html", {"form": form})
-
 
 @login_required
 def my_bookings(request):
