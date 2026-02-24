@@ -1,18 +1,39 @@
-<h2 class="text-xl font-semibold mb-6 text-center">Complete Payment</h2>
+{% extends "base.html" %}
 
-<div class="text-center mb-6">
-    <p>Lesson: {{ booking.get_lesson_type_display }}</p>
-    <p class="text-2xl font-bold">${{ booking.price }}</p>
+{% block title %}Complete Payment{% endblock %}
+
+{% block content %}
+
+<div class="max-w-lg mx-auto bg-white border border-gray-200 shadow-sm rounded-xl p-8">
+
+  <h2 class="text-2xl font-semibold text-center mb-6">
+    Complete Payment
+  </h2>
+
+  <div class="text-center mb-8 space-y-2">
+      <p class="text-sm text-gray-500">
+        {{ booking.get_lesson_type_display }}
+      </p>
+
+      <p class="text-3xl font-bold text-gray-900">
+        ${{ booking.price }}
+      </p>
+  </div>
+
+  <div class="flex flex-col sm:flex-row gap-4">
+
+      <a href="{% url 'checkout' booking.id %}"
+         class="w-full text-center bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition">
+          Pay Now
+      </a>
+
+      <a href="{% url 'pay_in_person' booking.id %}"
+         class="w-full text-center bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition">
+          Pay In Person
+      </a>
+
+  </div>
+
 </div>
 
-<div class="flex justify-center gap-4">
-    <a href="{% url 'checkout' booking.id %}"
-       class="bg-blue-600 text-white px-6 py-3 rounded-lg">
-        Pay Now
-    </a>
-
-    <a href="{% url 'pay_in_person' booking.id %}"
-       class="bg-gray-300 px-6 py-3 rounded-lg">
-        Pay In Person
-    </a>
-</div>
+{% endblock %}

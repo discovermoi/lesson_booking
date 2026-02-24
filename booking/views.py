@@ -60,7 +60,7 @@ def book_lesson(request):
             booking.paid = True
             booking.payment_status = "PAID"
             booking.save()
-            return redirect("booking_success")
+            return redirect("payment_success", booking_id=booking.id)
 
         # Paid lesson → go to payment options
         return redirect("booking_payment_options", booking_id=booking.id)
